@@ -1,0 +1,27 @@
+import { configureStore } from '@reduxjs/toolkit';
+import socketMiddleware from '../middlewares/socketMiddleware';
+import chatReducer from '../features/chat/chatSlice';
+import socketReducer from '../socket/socketSlice';
+
+/**
+ * File Name: store.ts
+ * Purpose: This file configures and exports the main Redux store.
+ * It brings together all the reducers and middleware.
+ */
+export const store = configureStore({
+  reducer: {
+    socket: socketReducer,
+    chat: chatReducer,
+  },
+  // The middleware is applied here, enabling it to process actions globally.
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      // We need to disable the serializable check for the socket instance if it were ever stored in state,
+      // but our middleware pattern avoids that, which is cleaner.
+    }).concat(socketMiddleware),
+});
+
+// These types are essential for TypeScript. They help you use useSelector and useDispatch with full type safety.
+// We infer the `RootState` and `AppDispatch` types directly from the store itself.
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
