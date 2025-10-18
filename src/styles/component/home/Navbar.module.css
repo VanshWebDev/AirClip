@@ -1,0 +1,62 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  /* background: rgba(250, 250, 252, 0.6); */
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.06); */
+}
+
+.container {
+  /* max-width: 1080px; */
+  margin: 0 auto;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.logo {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #0b0b0c;
+}
+
+.logoImg {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.avatar:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.avatar:active {
+  transform: scale(0.98);
+}
+
+.avatarIcon {
+  width: 18px;
+  height: 18px;
+  fill: #0b0b0c;
+}
+
+

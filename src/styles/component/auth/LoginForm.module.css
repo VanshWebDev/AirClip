@@ -1,0 +1,67 @@
+.loginFormContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginForm {
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border: 1px solid rgb(241, 241, 241);
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.emailInput,
+.pwdInput {
+  height: 40px;
+}
+
+.forgotPwd {
+  text-align: right;
+  color: rgb(0, 119, 255);
+  margin-bottom: 20px;
+  font-weight: 600;
+  display: flex;
+  justify-content: end;
+}
+
+.forgotPwd div {
+  cursor: pointer;
+}
+
+.actionBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signInBtn {
+  /* border: 1px solid red; */
+  width: 100% !important;
+  background: #000 !important;
+  height: 40px !important;
+  color: #fff !important;
+}
+
+.signInBtn:hover {
+  background: #000 !important;
+}
+
+.dontHaveAccount span {
+  color: rgb(0, 140, 255);
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.orWith {
+  /* margin-bottom: 10px; */
+}

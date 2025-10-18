@@ -1,0 +1,73 @@
+.signupFormContainer {
+  /* border: 1px solid red; */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.signupForm {
+  width: 365px;
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border: 1px solid rgb(241, 241, 241);
+  border-radius: 10px;
+}
+
+.emailInput,
+.usernameInput,
+.pwdInput,
+.confirmPwdInput,
+.otpInput {
+  height: 40px;
+}
+
+.sendOtp {
+  text-align: right;
+  color: rgb(0, 119, 255);
+  margin-bottom: 20px;
+  font-weight: 600;
+  display: flex;
+  justify-content: end;
+}
+
+.sendOtp div {
+  cursor: pointer;
+  /* border: 1px solid red; */
+}
+
+.actionBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signupBtn {
+  /* border: 1px solid red; */
+  width: 100% !important;
+  background: #000 !important;
+  height: 40px !important;
+  color: #fff !important;
+}
+
+.signupBtn:hover {
+  background: #000 !important;
+}
+
+.dontHaveAccount span {
+  color: rgb(0, 140, 255);
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.orWith {
+  /* margin-bottom: 10px; */
+}

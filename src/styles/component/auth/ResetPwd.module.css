@@ -1,0 +1,36 @@
+.resetPwdContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resetPwd {
+  width: 365px;
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border: 1px solid rgb(241, 241, 241);
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.otpInput,
+.passwordInput {
+  height: 40px;
+}
+
+.resetBtn {
+  width: 100% !important;
+  background: #000 !important;
+  height: 40px !important;
+  color: #fff !important;
+}
+
+.resetBtn:hover {
+  background: #000 !important;
+}
