@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import socketMiddleware from '../middlewares/socketMiddleware';
 import chatReducer from '../features/chat/chatSlice';
+import authReducer from '../features/auth/authSlice';
 import socketReducer from '../socket/socketSlice';
+import { apiSlice } from '@/features/apiSlice';
 
 /**
  * File Name: store.ts
@@ -12,13 +14,15 @@ export const store = configureStore({
   reducer: {
     socket: socketReducer,
     chat: chatReducer,
+    auth: authReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   // The middleware is applied here, enabling it to process actions globally.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       // We need to disable the serializable check for the socket instance if it were ever stored in state,
       // but our middleware pattern avoids that, which is cleaner.
-    }).concat(socketMiddleware),
+    }).concat(socketMiddleware).concat(apiSlice.middleware),
 });
 
 // These types are essential for TypeScript. They help you use useSelector and useDispatch with full type safety.
