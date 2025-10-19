@@ -32,8 +32,11 @@ const CreatePwd: FC<{ email: string }> = ({ email }) => {
     // setIsLoading(true);
     try {
       const res = await signupWithEmail(values).unwrap();
+      console.log(res)
       if(res.user){
+
         dispatch(setUser(res.user))
+        // dispatch(is)
         navigate("/")
       } 
     } catch (err) {

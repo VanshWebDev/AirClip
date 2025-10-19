@@ -11,6 +11,7 @@ interface UserDetails {
   email: string;
   picture: string;
   username: string;
+  _id: string;
 }
 
 // Define the state structure for this slice
@@ -27,6 +28,7 @@ const initialState: AuthState = {
     email: "",
     picture:"",
     username:"",
+    _id: "",
   },
   passwordResetEmail: null,
 };
@@ -60,6 +62,7 @@ const authSlice = createSlice({
         email: "",
         picture: "",
         username: "",
+        _id: "",
       };
     },
     // ACTION TO STORE THE EMAIL FOR PASSWORD RESET

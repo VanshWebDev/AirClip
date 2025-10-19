@@ -49,6 +49,7 @@ const LoginForm: FC = () => {
             email: res.user.email,
             picture: res.user.picture || "",
             username: res.user.username || "",
+            _id: res.user._id,
           })
         );
         navigate(location?.state?.previousPath || "/");

@@ -7,6 +7,7 @@ interface UserDetails {
   email: string;
   picture: string;
   username: string;
+  _id: string;
 }
 
 // Define new types for the signup flow
@@ -170,6 +171,15 @@ export const apiSlice = createApi({
         data: credentials,
       }),
     }),
+
+    // +++ ADD THIS QUERY
+    checkToken: builder.query<GenericApiResponse, void>({
+      query: () => ({
+        url: '/auth/checktoken',
+        method: 'GET',
+        // withCredentials is now handled by your global apiClient
+      }),
+    }),
   }),
 });
 
@@ -183,4 +193,5 @@ export const {
   useLoginUserMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useCheckTokenQuery,
 } = apiSlice;

@@ -3,6 +3,7 @@ import socketMiddleware from '../middlewares/socketMiddleware';
 import chatReducer from '../features/chat/chatSlice';
 import authReducer from '../features/auth/authSlice';
 import socketReducer from '../socket/socketSlice';
+import onlineUsers from "../features/clipboard/userSlice"
 import { apiSlice } from '@/features/apiSlice';
 
 /**
@@ -15,6 +16,7 @@ export const store = configureStore({
     socket: socketReducer,
     chat: chatReducer,
     auth: authReducer,
+    onlineUser: onlineUsers,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   // The middleware is applied here, enabling it to process actions globally.
