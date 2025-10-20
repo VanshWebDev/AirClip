@@ -21,7 +21,7 @@ function App() {
   // 2. Use a useEffect to react to the result of the query.
   useEffect(() => {
     // When the query is successful and we have user data, dispatch it to the auth slice.
-    console.log(data);
+    console.log("check toke", data);
     if (data?.authenticated && data?.user) {
       dispatch(setUser(data.user));
       dispatch(setLoginStatus(true));

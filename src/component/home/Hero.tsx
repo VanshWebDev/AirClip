@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { RootState } from "@/store/store";
-import { Copy } from "lucide-react";
+import { Copy, Users } from "lucide-react";
 import { toast } from "sonner";
 import { ErrHandling } from "@/utils/Err/ErrHandling";
 
@@ -17,20 +17,23 @@ export const Hero = () => {
 
   // Select all necessary data from the Redux store
   const { user } = useAppSelector((state: RootState) => state.auth);
-  const { messages, currentRoom } = useAppSelector((state: RootState) => state.chat);
-  const {isUserLoggedIn } = useAppSelector((state:RootState)=> state.auth)
+  const { messages, currentRoom } = useAppSelector(
+    (state: RootState) => state.chat
+  );
+  const { isUserLoggedIn } = useAppSelector((state: RootState) => state.auth);
+  const { currentRoomUsers } = useAppSelector((state: RootState) => state.room);
   // By default, set the user's personal room as the current room
   useEffect(() => {
     if (user && !currentRoom) {
       // The user's private room is named after their user ID
-      dispatch(setCurrentRoom(user._id)); 
+      dispatch(setCurrentRoom(user._id));
     }
   }, [user, currentRoom, dispatch]);
-  
+
   const handleJoinRoom = () => {
     if (!roomInput.trim()) return;
     // Dispatch an action for the middleware to join the custom room
-    dispatch({ type: 'socket/joinRoom', payload: roomInput });
+    dispatch({ type: "socket/joinRoom", payload: roomInput });
     // Update the state to reflect the new room and clear old messages
     dispatch(setCurrentRoom(roomInput));
     setRoomInput("");
@@ -39,40 +42,42 @@ export const Hero = () => {
   const handleGoToPersonalClipboard = () => {
     if (!user) return;
     // Join the personal room (named after user._id)
-    dispatch({ type: 'socket/joinRoom', payload: user._id });
+    dispatch({ type: "socket/joinRoom", payload: user._id });
     dispatch(setCurrentRoom(user._id));
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItem.trim()) return;
     // The sendMessage action now implicitly sends to the currentRoom via the middleware
-    console.log(newItem)
+    console.log(newItem);
     dispatch(sendMessage({ content: newItem }));
     setNewItem("");
   };
 
-   const handleCopy = (text: string) => {
+  const handleCopy = (text: string) => {
     // A reliable way to copy text to the clipboard that works in most environments
     const textArea = document.createElement("textarea");
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
     try {
-      document.execCommand('copy');
+      document.execCommand("copy");
       toast.success("Copied to clipboard!");
     } catch (err) {
-      ErrHandling(err, "Couldn't copy text")
+      ErrHandling(err, "Couldn't copy text");
     }
     document.body.removeChild(textArea);
   };
 
   if (!isUserLoggedIn) {
     return (
-        <div className="container text-center py-12">
-            <h2 className="text-2xl font-bold">Welcome to AirClip</h2>
-            <p className="text-muted-foreground">Please log in to sync your clipboard in real-time.</p>
-        </div>
+      <div className="container text-center py-12">
+        <h2 className="text-2xl font-bold">Welcome to AirClip</h2>
+        <p className="text-muted-foreground">
+          Please log in to sync your clipboard in real-time.
+        </p>
+      </div>
     );
   }
 
@@ -83,18 +88,29 @@ export const Hero = () => {
         <CardHeader>
           <CardTitle>Collaboration Space</CardTitle>
           <p className="text-sm text-muted-foreground pt-2">
-            Currently in room: <span className="font-semibold text-primary">{currentRoom}</span>
+            Currently in room:{" "}
+            <span className="font-semibold text-primary">
+              {currentRoom === user._id ? "Own room" : currentRoom}
+            </span>
           </p>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-col gap-4">
-          <Input 
+          <Input
             placeholder="Enter a room name to join or create..."
             value={roomInput}
             onChange={(e) => setRoomInput(e.target.value)}
           />
           <div className="flex flex-col gap-2">
-            <Button onClick={handleJoinRoom} className="w-full">Join Room</Button>
-            <Button variant="outline" onClick={handleGoToPersonalClipboard} className="w-full">Personal</Button>
+            <Button onClick={handleJoinRoom} className="w-full">
+              Join Room
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleGoToPersonalClipboard}
+              className="w-full"
+            >
+              Personal
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -117,8 +133,50 @@ export const Hero = () => {
               </form>
             </CardContent>
           </Card>
+
+          {/* NEW: Online Users Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Users className="h-5 w-5 mr-2" />
+                Users in Room ({currentRoomUsers.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[150px] w-full">
+                {currentRoomUsers.length > 0 ? (
+                  <ul className="space-y-2 pr-4">
+                    {currentRoomUsers.map((roomUser) => (
+                      <li
+                        key={roomUser.userId}
+                        className="text-sm p-2 bg-secondary rounded-md flex items-center"
+                      >
+                        <span
+                          className={`h-2 w-2 rounded-full mr-2 ${
+                            roomUser.userId === user._id
+                              ? "bg-green-500"
+                              : "bg-gray-400"
+                          }`}
+                        ></span>
+                        {roomUser.username}
+                        {roomUser.userId === user._id && (
+                          <span className="text-xs text-muted-foreground ml-2">
+                            (You)
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Only you are in this room.
+                  </p>
+                )}
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </div>
-        
+
         <aside>
           <Card>
             <CardHeader>
@@ -129,16 +187,23 @@ export const Hero = () => {
                 {messages.length > 0 ? (
                   <ul className="space-y-3 pr-4">
                     {messages.map((item) => (
-                      <li key={item.id} className="flex justify-between text-sm p-3 bg-secondary rounded-md break-all shadow-sm">
-                         <span className="break-all">{item.content}</span>
+                      <li
+                        key={item.id}
+                        className="flex justify-between text-sm p-3 bg-secondary rounded-md break-all shadow-sm"
+                      >
+                        <span className="break-all">{item.content}</span>
                         <Copy
-                          className="h-4 w-4 text-muted-foreground cursor-pointer shrink-0 hover:text-primary" 
+                          className="h-4 w-4 text-muted-foreground cursor-pointer shrink-0 hover:text-primary"
                           onClick={() => handleCopy(item.content)}
                         />
                       </li>
                     ))}
                   </ul>
-                ) : <p className="text-sm text-muted-foreground">No items in this room yet.</p>}
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    No items in this room yet.
+                  </p>
+                )}
               </ScrollArea>
             </CardContent>
           </Card>
@@ -147,4 +212,3 @@ export const Hero = () => {
     </div>
   );
 };
-

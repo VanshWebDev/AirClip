@@ -3,28 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { setConnectionStatus } from "../socket/socketSlice";
 import { addMessage, type ClipboardItem } from "../features/chat/chatSlice"; // Import ClipboardItem type
 import { toast } from "sonner";
-
-
-// // Helper function to copy text to the clipboard and show a toast
-//   const copyToClipboard = (text: string) => {
-//     const textArea = document.createElement("textarea");
-//     textArea.value = text;
-//     // Make the textarea invisible
-//     // textArea.style.position = "fixed";
-//     // textArea.style.left = "-9999px";
-//     document.body.appendChild(textArea);
-//     textArea.select();
-//     try {
-//       document.execCommand('copy');
-//       toast.info("New item copied to your clipboard!");
-//     } catch (err) {
-//       // Fail silently if auto-copy is blocked by the browser
-//       console.error("Auto-copy failed:", err);
-//     }
-//     document.body.removeChild(textArea);
-//   };
-
-
+import { setRoomUsers } from "@/features/room/roomSlice";
 
 /**
  * File Name: socketMiddleware.ts
@@ -34,6 +13,7 @@ import { toast } from "sonner";
  */
 
 const socketMiddleware: Middleware = (store) => {
+  console.log("store: ", store)
   let socket: Socket | null = null;
 
    // Helper function to copy text to the clipboard and show a toast
@@ -68,6 +48,7 @@ const socketMiddleware: Middleware = (store) => {
 
 
   return (next) => (action: unknown) => {
+    console.log("action: ", action)
     const { dispatch, getState } = store;
 
     // Basic type guard for Redux actions
@@ -75,7 +56,7 @@ const socketMiddleware: Middleware = (store) => {
       return next(action);
     }
 
-    const typedAction = action as { type: string; payload?: any };
+    const typedAction = action as { type: string; payload?: unknown };
     const { user } = getState().auth;
 
     switch (typedAction.type) {
@@ -92,7 +73,7 @@ const socketMiddleware: Middleware = (store) => {
             dispatch(setConnectionStatus(true));
 
             // 1. Register the user with their unique ID
-            socket?.emit("register_user", { userId: user._id });
+            socket?.emit("register_user", { userId: user._id, username: user.username });
 
             // 2. Automatically join the user's private room
             socket?.emit("join_room", user._id);
@@ -111,6 +92,12 @@ const socketMiddleware: Middleware = (store) => {
             }
             dispatch(addMessage(item));
           });
+
+          socket.on('update_room_users', (users) => {
+            console.log('Received updated user list:', users);
+            dispatch(setRoomUsers(users));
+          });
+
         }
         break;
 
@@ -138,8 +125,9 @@ const socketMiddleware: Middleware = (store) => {
           if (currentRoom) {
             console.log(currentRoom)
             // Aur data ko server par bhej deta hai
+            console.log(typedAction)
             socket.emit("send_clipboard_item", {
-              content: typedAction.payload.content,
+              content: (typedAction.payload as { content: string }).content,
               room: currentRoom,
             });
           }
