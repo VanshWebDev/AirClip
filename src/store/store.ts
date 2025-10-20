@@ -5,6 +5,7 @@ import authReducer from '../features/auth/authSlice';
 import socketReducer from '../socket/socketSlice';
 import onlineUsers from "../features/clipboard/userSlice"
 import { apiSlice } from '@/features/apiSlice';
+import roomReducer from "@/features/room/roomSlice"
 
 /**
  * File Name: store.ts
@@ -17,6 +18,7 @@ export const store = configureStore({
     chat: chatReducer,
     auth: authReducer,
     onlineUser: onlineUsers,
+    room: roomReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   // The middleware is applied here, enabling it to process actions globally.
