@@ -27,7 +27,6 @@ const SignupForm = () => {
     const { email, otp } = values;
     try {
       const res = await verifySignupOtp({ email, otp }).unwrap();
-      console.log(res);
       if (res.status == 200 || res.success == true) {
         setIsEmailVerified(true);
       }

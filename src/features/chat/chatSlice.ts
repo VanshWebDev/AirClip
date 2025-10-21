@@ -9,6 +9,8 @@ export interface ClipboardItem {
   id: string; 
   content: string;
   senderId: string;
+  senderUsername: string;
+  deviceInfo: string;
 }
 
 // Define the state structure for this slice

@@ -7,6 +7,7 @@ import { ErrHandling } from "../../../utils/Err/ErrHandling";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useSignupWithEmailMutation } from "@/features/apiSlice";
 import { setUser } from "@/features/auth/authSlice";
+import { setCurrentRoom } from "@/features/chat/chatSlice";
 
 const CreatePwd: FC<{ email: string }> = ({ email }) => {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ const CreatePwd: FC<{ email: string }> = ({ email }) => {
   // +++ Setup RTK Query and Redux dispatch
   const dispatch = useAppDispatch();
   const [signupWithEmail, { isLoading }] = useSignupWithEmailMutation();
-  console.log("isloading: ", isLoading)
   interface values {
     password: string;
     confirmPassword: string;
@@ -32,16 +32,15 @@ const CreatePwd: FC<{ email: string }> = ({ email }) => {
     // setIsLoading(true);
     try {
       const res = await signupWithEmail(values).unwrap();
-      console.log(res)
       if(res.user){
 
         dispatch(setUser(res.user))
+        dispatch(setCurrentRoom(null))
         // dispatch(is)
         navigate("/")
       } 
     } catch (err) {
       // The 'err' object from .unwrap() is the error payload from the server
-      console.log(err)
       ErrHandling(err, "Something went wrong");
     }
   };

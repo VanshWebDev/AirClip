@@ -13,15 +13,13 @@ import { setRoomUsers } from "@/features/room/roomSlice";
  */
 
 const socketMiddleware: Middleware = (store) => {
-  console.log("store: ", store)
   let socket: Socket | null = null;
 
-   // Helper function to copy text to the clipboard and show a toast
+  // Helper function to copy text to the clipboard and show a toast
   const copyToClipboard = async (text: string) => {
     // --- THIS IS THE FIX ---
     // 1. Check if the document is currently focused. If not, do nothing.
     // This prevents the "Document is not focused" error.
-    console.log(document.hasFocus())
     if (!document.hasFocus()) {
       return; // Silently exit if the tab is not active
     }
@@ -46,9 +44,22 @@ const socketMiddleware: Middleware = (store) => {
     }
   };
 
+  const getDeviceName = (): string => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "Tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "Mobile";
+    }
+    return "Desktop";
+  };
 
   return (next) => (action: unknown) => {
-    console.log("action: ", action)
     const { dispatch, getState } = store;
 
     // Basic type guard for Redux actions
@@ -69,11 +80,14 @@ const socketMiddleware: Middleware = (store) => {
 
           // --- Event Listeners ---
           socket.on("connect", () => {
-            console.log("Socket connected:", socket?.id);
             dispatch(setConnectionStatus(true));
 
             // 1. Register the user with their unique ID
-            socket?.emit("register_user", { userId: user._id, username: user.username });
+            socket?.emit("register_user", {
+              userId: user._id,
+              username: user.username,
+              deviceInfo: getDeviceName(), 
+            });
 
             // 2. Automatically join the user's private room
             socket?.emit("join_room", user._id);
@@ -85,19 +99,16 @@ const socketMiddleware: Middleware = (store) => {
 
           // 3. Listen for incoming clipboard items for the current room
           socket.on("receive_clipboard_item", (item: ClipboardItem) => {
-            console.log("receive_clipboard_item", item)
-               // Check if the message came from a different socket (another device or user)
+            // Check if the message came from a different socket (another device or user)
             if (socket && item.senderId !== socket.id) {
               copyToClipboard(item.content);
             }
             dispatch(addMessage(item));
           });
 
-          socket.on('update_room_users', (users) => {
-            console.log('Received updated user list:', users);
+          socket.on("update_room_users", (users) => {
             dispatch(setRoomUsers(users));
           });
-
         }
         break;
 
@@ -112,7 +123,6 @@ const socketMiddleware: Middleware = (store) => {
       // 4. New Action to join a specific room
       case "socket/joinRoom":
         if (socket) {
-          console.log("join room: ", typedAction.payload);
           socket.emit("join_room", typedAction.payload);
         }
         break;
@@ -120,12 +130,9 @@ const socketMiddleware: Middleware = (store) => {
       // Action to send a message (emitted to the server)
       case "chat/sendMessage": // <-- Middleware is action ko yahan pakadta hai
         if (socket && getState().socket.isConnected) {
-            console.log(typedAction.payload)
           const { currentRoom } = getState().chat;
           if (currentRoom) {
-            console.log(currentRoom)
             // Aur data ko server par bhej deta hai
-            console.log(typedAction)
             socket.emit("send_clipboard_item", {
               content: (typedAction.payload as { content: string }).content,
               room: currentRoom,

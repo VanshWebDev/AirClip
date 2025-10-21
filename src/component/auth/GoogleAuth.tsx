@@ -13,6 +13,7 @@ import {
 import { useAppDispatch } from "@/hooks/hooks";
 import { setUser } from "@/features/auth/authSlice";
 import { toast } from "sonner";
+import { setCurrentRoom } from "@/features/chat/chatSlice";
 
 const clientId = import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID;
 
@@ -39,7 +40,6 @@ const GoogleAuth: FC<{ authMethod: string }> = ({ authMethod }) => {
         // The wantToCreateNewAcc flag is removed
         res = await signupWithGoogle({ token }).unwrap();
       }
-      console.log(res)
       toast.success(res.message)
       if (res.user) {
         dispatch(setUser({
@@ -51,6 +51,7 @@ const GoogleAuth: FC<{ authMethod: string }> = ({ authMethod }) => {
         }));
       }
       navigate(location?.state?.previousPath || "/");
+      dispatch(setCurrentRoom(null))
     } catch (err: unknown) {
       // The "user exists" case will now be caught here as an error
       const errorData = err as {

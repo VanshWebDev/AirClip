@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setPasswordResetEmail, setUser } from "@/features/auth/authSlice";
 // import { setUser } from "@/features/auth/authSlice";
 import { toast } from "sonner"; // +++ Import toast
+import { setCurrentRoom } from "@/features/chat/chatSlice";
 // Define the type for the form values expected in the login form
 interface LoginFormValues {
   emailOrUsername: string;
@@ -39,7 +40,6 @@ const LoginForm: FC = () => {
     try {
       // +++ Use the RTK Query mutation
       const res = await loginUser(values).unwrap();
-      console.log(res);
       // +++ DISPATCH setUser ON SUCCESSFUL LOGIN
       if (res.user) {
         toast.success(res.message);
@@ -52,23 +52,23 @@ const LoginForm: FC = () => {
             _id: res.user._id,
           })
         );
+        dispatch(setCurrentRoom(null))
         navigate(location?.state?.previousPath || "/");
       }
     } catch (error) {
       // .unwrap() provides the error payload
-      console.log(error);
       ErrHandling(error, "something went wrong");
     }
   };
 
   const handleForgotPassword = async () => {
-    const emailOrUsername = form.getFieldValue("emailOrUsername");
+    const emailOrUsername = form.getFieldValue("emailOrUsername") as string;
     if (!emailOrUsername) {
       message.info("Please enter your email.");
       return;
     }
     // +++ USE THE CORRECT ACTION HERE
-    dispatch(setPasswordResetEmail(emailOrUsername));
+    dispatch(setPasswordResetEmail(emailOrUsername.toLowerCase()));
     // +++ Show loading toast
     const toastId = toast.loading("Sending OTP...");
     // +++ Show loading message
@@ -77,7 +77,6 @@ const LoginForm: FC = () => {
     try {
       // +++ Use the RTK Query mutation
       const res = await forgotPassword({ emailOrUsername }).unwrap();
-      console.log(res);
       if (res.data.emailSent) {
         // messageApi.open({ key, type: "success", content: res.data.message });
         // toast.success(res.data.message);
@@ -91,7 +90,6 @@ const LoginForm: FC = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       ErrHandling(error, "Something went wrong");
     }
   };
