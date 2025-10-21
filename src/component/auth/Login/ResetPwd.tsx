@@ -5,14 +5,16 @@ import styles from "../../../styles/component/auth/ResetPwd.module.css";
 import { ErrHandling } from "../../../utils/Err/ErrHandling";
 import { useResetPasswordMutation } from "@/features/apiSlice";
 import type { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { setCurrentRoom } from "@/features/chat/chatSlice";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState(""); // State for password input
   const [feedback, setFeedback] = useState(""); // State for password feedback
   const { passwordResetEmail } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // +++ Instantiate the hook
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
@@ -37,13 +39,12 @@ const ResetPasswordPage = () => {
         ...values,
         email: passwordResetEmail, // Get email from Redux state
       }).unwrap();
-      console.log(res);
       toast.success(res.message);
       if (res.isPwdReset) {
+        dispatch(setCurrentRoom(null))
         navigate("/");
       }
     } catch (err: unknown) {
-      console.log(err);
       ErrHandling(err, "Failed to reset password. Please try again.");
     }
   };

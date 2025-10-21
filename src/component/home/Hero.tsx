@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { RootState } from "@/store/store";
 import { Copy, Users } from "lucide-react";
 import { toast } from "sonner";
 import { ErrHandling } from "@/utils/Err/ErrHandling";
+import type { RootState } from "@/store/store";
 
 export const Hero = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +50,6 @@ export const Hero = () => {
     e.preventDefault();
     if (!newItem.trim()) return;
     // The sendMessage action now implicitly sends to the currentRoom via the middleware
-    console.log(newItem);
     dispatch(sendMessage({ content: newItem }));
     setNewItem("");
   };
@@ -191,7 +190,13 @@ export const Hero = () => {
                         key={item.id}
                         className="flex justify-between text-sm p-3 bg-secondary rounded-md break-all shadow-sm"
                       >
-                        <span className="break-all">{item.content}</span>
+                        <div>
+                        <code>Name: {item.senderUsername}</code>
+                        <br />
+                        <code>Device name: {item.deviceInfo}</code>
+                        <br />
+                        <span className="break-all">Text: {item.content}</span>
+                        </div>
                         <Copy
                           className="h-4 w-4 text-muted-foreground cursor-pointer shrink-0 hover:text-primary"
                           onClick={() => handleCopy(item.content)}
