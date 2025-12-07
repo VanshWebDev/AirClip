@@ -86,7 +86,7 @@ const socketMiddleware: Middleware = (store) => {
             socket?.emit("register_user", {
               userId: user._id,
               username: user.username,
-              deviceInfo: getDeviceName(), 
+              senderDeviceInfo: getDeviceName(), 
             });
 
             // 2. Automatically join the user's private room
@@ -99,6 +99,7 @@ const socketMiddleware: Middleware = (store) => {
 
           // 3. Listen for incoming clipboard items for the current room
           socket.on("receive_clipboard_item", (item: ClipboardItem) => {
+            console.log("receive_clipboard_item", item)
             // Check if the message came from a different socket (another device or user)
             if (socket && item.senderId !== socket.id) {
               copyToClipboard(item.content);
@@ -132,6 +133,7 @@ const socketMiddleware: Middleware = (store) => {
         if (socket && getState().socket.isConnected) {
           const { currentRoom } = getState().chat;
           if (currentRoom) {
+            console.log(typedAction.payload)
             // Aur data ko server par bhej deta hai
             socket.emit("send_clipboard_item", {
               content: (typedAction.payload as { content: string }).content,
