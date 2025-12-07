@@ -1,6 +1,7 @@
 // src/features/api/apiSlice.ts
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "../services/axiosBaseQuery";
+import type { ClipboardItem } from "./chat/chatSlice";
 
 interface UserDetails {
   name?: string;
@@ -88,7 +89,7 @@ interface ResetPasswordArgs {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery(), // Use your custom axiosBaseQuery here!
-  tagTypes: ["Clipboard"], // Used for caching and invalidation
+  tagTypes: ["Clipboard", "History"], // Used for caching and invalidation
   endpoints: (builder) => ({
     // Endpoint to get all clipboard items
 
@@ -180,6 +181,17 @@ export const apiSlice = createApi({
         // withCredentials is now handled by your global apiClient
       }),
     }),
+    getClipboardHistory: builder.query<ClipboardItem[], string>({
+      // <-- FIX 1: Return an object
+      query: (roomName) => ({
+        url: `/socket/history/${roomName}`,
+        method: 'GET',
+      }),
+      providesTags: (__, _, roomName) => [
+        { type: "History", id: roomName },
+      ],
+    }),
+
   }),
 });
 
@@ -194,4 +206,5 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useCheckTokenQuery,
+  useGetClipboardHistoryQuery,
 } = apiSlice;

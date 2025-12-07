@@ -10,7 +10,7 @@ export interface ClipboardItem {
   content: string;
   senderId: string;
   senderUsername: string;
-  deviceInfo: string;
+  senderDeviceInfo: string;
 }
 
 // Define the state structure for this slice
@@ -40,6 +40,10 @@ const chatSlice = createSlice({
      * This action is dispatched by the middleware when a new item is received.
      */
     addMessage: (state, action: PayloadAction<ClipboardItem>) => {
+        // Ensure messages is an array before trying to unshift
+      if (!Array.isArray(state.messages)) {
+        state.messages = [];
+      }
       state.messages.unshift(action.payload);
     },
     
@@ -51,9 +55,30 @@ const chatSlice = createSlice({
       // When changing rooms, clear the old messages to avoid confusion
       state.messages = []; 
     },
+   /**
+     * Corrected reducer to handle historical data.
+     * It now checks if the payload is the array itself or an object containing the array.
+     */
+    setHistory: (state, action: PayloadAction<any>) => {
+      const payload = action.payload;
+
+      if (Array.isArray(payload)) {
+        // If the payload is already a clean array, use it.
+        state.messages = payload;
+      } else if (typeof payload === 'object' && payload !== null) {
+        // If it's an object, convert its values into an array.
+        // We filter out any non-object values like the 'status' property.
+        state.messages = Object.values(payload).filter(
+          (item: any) => typeof item === 'object' && item !== null && '_id' in item
+        ) as ClipboardItem[];
+      } else {
+        // Fallback for any other unexpected data type
+        state.messages = [];
+      }
+    },
   },
 });
 
-export const { sendMessage, addMessage, setCurrentRoom } = chatSlice.actions;
+export const { sendMessage, addMessage, setCurrentRoom, setHistory } = chatSlice.actions;
 export default chatSlice.reducer;
 

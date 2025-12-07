@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { sendMessage, setCurrentRoom } from "@/features/chat/chatSlice";
+import { sendMessage, setCurrentRoom, setHistory } from "@/features/chat/chatSlice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Copy, Users } from "lucide-react";
+import { Copy, Laptop, Smartphone, Tablet, Users } from "lucide-react";
 import { toast } from "sonner";
 import { ErrHandling } from "@/utils/Err/ErrHandling";
 import type { RootState } from "@/store/store";
+import { useGetClipboardHistoryQuery } from "../../features/apiSlice";
+
+// Helper component for device icons
+const DeviceIcon = ({ deviceName }: { deviceName: string }) => {
+    switch (deviceName) {
+      case 'Mobile': return <Smartphone className="h-4 w-4" />;
+      case 'Tablet': return <Tablet className="h-4 w-4" />;
+      default: return <Laptop className="h-4 w-4" />;
+    }
+};
 
 export const Hero = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +32,18 @@ export const Hero = () => {
   );
   const { isUserLoggedIn } = useAppSelector((state: RootState) => state.auth);
   const { currentRoomUsers } = useAppSelector((state: RootState) => state.room);
+  // 2. FETCH HISTORY WHEN THE CURRENT ROOM CHANGES
+  const { data: history, isLoading: isHistoryLoading } = useGetClipboardHistoryQuery(
+    currentRoom!, // Use non-null assertion because skip is true when it's null
+    { skip: !currentRoom } // Don't run the query if there is no room selected
+  );
+console.log(isHistoryLoading)
+  // 3. When the history data arrives, dispatch it to the chat slice
+  useEffect(() => {
+    if (history) {
+      dispatch(setHistory(history));
+    }
+  }, [history, dispatch]);
   // By default, set the user's personal room as the current room
   useEffect(() => {
     if (user && !currentRoom) {
@@ -179,7 +201,7 @@ export const Hero = () => {
         <aside>
           <Card>
             <CardHeader>
-              <CardTitle>Clipboard History</CardTitle>
+              <CardTitle>{isHistoryLoading? "loading history...": "Clipboard History"}</CardTitle>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[300px] w-full">
@@ -191,11 +213,14 @@ export const Hero = () => {
                         className="flex justify-between text-sm p-3 bg-secondary rounded-md break-all shadow-sm"
                       >
                         <div>
-                        <code>Name: {item.senderUsername}</code>
-                        <br />
-                        <code>Device name: {item.deviceInfo}</code>
-                        <br />
-                        <span className="break-all">Text: {item.content}</span>
+                          <code>Name: {item.senderUsername}</code>
+                          <br />
+
+                          <code>Device name: {item.senderDeviceInfo}<DeviceIcon deviceName={item.senderDeviceInfo} /></code>
+                          <br />
+                          <span className="break-all">
+                            Text: {item.content}
+                          </span>
                         </div>
                         <Copy
                           className="h-4 w-4 text-muted-foreground cursor-pointer shrink-0 hover:text-primary"
