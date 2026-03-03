@@ -1,0 +1,732 @@
+/* ============================
+   GuestPage.module.css
+   White · Refined · Professional
+   ============================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ── CSS Variables ─────────────────────────────── */
+.wrapper {
+  --color-bg: #ffffff;
+  --color-surface: #f8f8f6;
+  --color-border: #e8e6e1;
+  --color-text-primary: #111110;
+  --color-text-secondary: #6b6a65;
+  --color-text-muted: #a09e98;
+  --color-accent: #1a1a18;
+  --color-accent-hover: #2e2e2a;
+  --color-cta: #18181b;
+  --color-cta-hover: #27272a;
+  --color-feature-icon-bg: #f4f3ef;
+  --color-badge-bg: #f0ede6;
+  --color-badge-dot: #22c55e;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.07);
+  --radius-card: 16px;
+  --radius-btn: 10px;
+
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Decorative Blobs ──────────────────────────── */
+.blobTopRight {
+  position: fixed;
+  top: -120px;
+  right: -160px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #f5f0e8 0%, #ede8de 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+}
+
+.blobBottomLeft {
+  position: fixed;
+  bottom: -140px;
+  left: -100px;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 60%, #eef2f7 0%, #e4ecf5 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── Navbar ────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 5vw, 80px);
+  height: 64px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoMark {
+  font-size: 16px;
+  color: var(--color-accent);
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navLoginBtn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.navLoginBtn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+.navSignupBtn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: var(--color-cta);
+  border: none;
+  padding: 8px 18px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+
+.navSignupBtn:hover {
+  background: var(--color-cta-hover);
+  transform: translateY(-1px);
+}
+
+/* ── Main ──────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(60px, 10vh, 100px) clamp(20px, 5vw, 80px) 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Hero ──────────────────────────────────────── */
+.heroContainer {
+  text-align: center;
+  max-width: 680px;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--color-badge-bg);
+  border: 1px solid #e0dbd1;
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 28px;
+  letter-spacing: 0.2px;
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-badge-dot);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+  display: inline-block;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18); }
+  50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.06); }
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7vw, 72px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--color-text-primary);
+  margin: 0 0 24px;
+}
+
+.heroAccent {
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.heroSubtitle {
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin: 0 0 40px;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── CTA Buttons ───────────────────────────────── */
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  background: var(--color-cta);
+  border: none;
+  padding: 13px 26px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.ctaPrimary:hover {
+  background: var(--color-cta-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.ctaPrimary svg {
+  transition: transform 0.18s ease;
+}
+
+.ctaPrimary:hover svg {
+  transform: translateX(3px);
+}
+
+.ctaSecondary {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  padding: 12px 24px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+
+.ctaSecondary:hover {
+  border-color: #c8c5be;
+  background: var(--color-surface);
+  transform: translateY(-1px);
+}
+
+.ctaNote {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Feature Cards ─────────────────────────────── */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 900px;
+  width: 100%;
+  margin-top: 72px;
+  animation: fadeUp 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.featureCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 28px 26px 26px;
+  transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+
+.featureCard:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+  border-color: #d8d4cc;
+}
+
+.featureIcon {
+  width: 44px;
+  height: 44px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  margin-bottom: 18px;
+}
+
+.featureTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 8px;
+  letter-spacing: -0.2px;
+}
+
+.featureDesc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ── Social Proof ──────────────────────────────── */
+.socialProof {
+  margin-top: 64px;
+  text-align: center;
+  animation: fadeUp 0.7s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.socialProofLabel {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 18px;
+}
+
+.socialProofLogos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.socialProofLogo {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  color: #c2bfb8;
+  letter-spacing: -0.3px;
+  transition: color 0.18s ease;
+}
+
+.socialProofLogo:hover {
+  color: var(--color-text-muted);
+}
+
+/* ── Footer ────────────────────────────────────── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px clamp(20px, 5vw, 80px);
+  border-top: 1px solid var(--color-border);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.footerLinks a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footerLinks a:hover {
+  color: var(--color-text-secondary);
+}
+
+/* ── Collaboration Section ─────────────────────── */
+.collab {
+  position: relative;
+  z-index: 1;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 80px);
+}
+
+.collabInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: start;
+}
+
+/* Left col */
+.collabEyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 14px;
+}
+
+.collabTitle {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+}
+
+.collabTitleAccent {
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.collabDesc {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin: 0 0 28px;
+  max-width: 420px;
+}
+
+/* GitHub buttons */
+.collabLinks {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.githubBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: #18181b;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+}
+
+.githubBtn:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.githubOutlineBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  padding: 9px 18px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+
+.githubOutlineBtn:hover {
+  border-color: #b8b4ac;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Instagram card */
+.instaCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #fce7f3;
+  background: #fff0f7;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  max-width: 300px;
+}
+
+.instaCard:hover {
+  border-color: #f9a8d4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.1);
+}
+
+.instaIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #fce7f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.instaText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+
+.instaHandle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #be185d;
+}
+
+.instaLabel {
+  font-size: 11.5px;
+  color: #9d174d;
+  opacity: 0.7;
+}
+
+.instaArrow {
+  color: #f472b6;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.instaCard:hover .instaArrow {
+  transform: translateX(3px);
+}
+
+/* Right col */
+.stackBox {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 22px 22px 20px;
+}
+
+.stackLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 14px;
+}
+
+.stackPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.stackPill {
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: 100px;
+  border: 1px solid rgba(0,0,0,0.06);
+  letter-spacing: 0.1px;
+}
+
+/* Repo cards */
+.repoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.repoCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+}
+
+.repoCard:hover {
+  border-color: #c8c5be;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+.repoEmoji {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.repoName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 2px;
+  letter-spacing: -0.1px;
+}
+
+.repoDesc {
+  font-size: 11.5px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.repoArrow {
+  color: var(--color-text-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.repoCard:hover .repoArrow {
+  color: var(--color-text-secondary);
+  transform: translate(2px, -2px);
+}
+
+/* ── Responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ctaGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .socialProofLogos {
+    gap: 20px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .collabInner {
+    grid-template-columns: 1fr;
+  }
+
+  .repoGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .instaCard {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .navLoginBtn {
+    display: none;
+  }
+
+  .heroTitle {
+    letter-spacing: -1.5px;
+  }
+
+  .repoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .collabLinks {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .featuresGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
