@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { ErrHandling } from "@/utils/Err/ErrHandling";
 import type { RootState } from "@/store/store";
 import { useGetClipboardHistoryQuery } from "../../features/apiSlice";
+import IfNotLogin from "./IfNotLogin";
 
 // Helper component for device icons
 const DeviceIcon = ({ deviceName }: { deviceName: string }) => {
@@ -93,12 +94,7 @@ console.log(isHistoryLoading)
 
   if (!isUserLoggedIn) {
     return (
-      <div className="container text-center py-12">
-        <h2 className="text-2xl font-bold">Welcome to AirClip</h2>
-        <p className="text-muted-foreground">
-          Please log in to sync your clipboard in real-time.
-        </p>
-      </div>
+      <IfNotLogin />
     );
   }
 

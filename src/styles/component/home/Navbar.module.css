@@ -1,64 +1,102 @@
-.navbar {
-  position: fixed;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  /* background: rgba(250, 250, 252, 0.6); */
-  /* border-bottom: 1px solid rgba(0, 0, 0, 0.06); */
-  /* border: 1px solid red; */
+/* ============================
+   Navbar.module.css
+   ============================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+.wrapper {
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.container {
-  /* max-width: 1080px; */
-  margin: 0 auto;
-  height: 56px;
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 clamp(20px, 5vw, 80px);
+  height: 64px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #e8e6e1;
 }
 
-.logo {
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  color: #0b0b0c;
-}
-
-.logoImg {
-  height: 30px;
-  width: auto;
-  display: block;
-}
-
-.avatar {
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
+/* ── Logo ──────────────────────────────────────── */
+.navLogo {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  gap: 8px;
+  text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.avatar:hover {
-  background: rgba(255, 255, 255, 0.75);
+.logoMark {
+  font-size: 16px;
+  color: #1a1a18;
 }
 
-.avatar:active {
-  transform: scale(0.98);
+.logoText {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 20px;
+  color: #111110;
+  letter-spacing: -0.3px;
 }
 
-.avatarIcon {
-  width: 18px;
-  height: 18px;
-  fill: #0b0b0c;
+/* ── Actions ───────────────────────────────────── */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.navLoginBtn {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b6a65;
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
 
+.navLoginBtn:hover {
+  color: #111110;
+  background: #f8f8f6;
+}
+
+.navSignupBtn {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: #18181b;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navSignupBtn:hover {
+  background: #27272a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Responsive ────────────────────────────────── */
+@media (max-width: 520px) {
+  .navLoginBtn {
+    display: none;
+  }
+
+  .navSignupBtn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
