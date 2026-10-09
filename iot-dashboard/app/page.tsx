@@ -1,12 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { io, type Socket } from "socket.io-client";
 import {
   Activity,
   AlertCircle,
   ArrowDownRight,
-  ArrowUpRight,
   Check,
   ChevronRight,
   CircleHelp,
@@ -116,7 +115,7 @@ function timeAgo(value?: string | null) {
   return "Seen " + Math.floor(milliseconds / 3_600_000) + " hr ago";
 }
 
-function StatusPill({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "green" | "amber" | "red" | "blue" }) {
+function StatusPill({ children, tone = "neutral" }: { children: ReactNode; tone?: "neutral" | "green" | "amber" | "red" | "blue" }) {
   return <span className={"status-pill status-pill--" + tone}><span className="status-pill__dot" />{children}</span>;
 }
 
@@ -126,10 +125,6 @@ function statusTone(status: string): "neutral" | "green" | "amber" | "red" | "bl
   if (status === "failed" || status === "error") return "red";
   if (status === "info") return "blue";
   return "neutral";
-}
-
-function formatCommand(command: string) {
-  return command === "LED_ON" ? "LED turned on" : command === "LED_OFF" ? "LED turned off" : command.replaceAll("_", " ");
 }
 
 export default function DashboardPage() {
