@@ -1,0 +1,31 @@
+name: IoT dashboard build
+
+on:
+  push:
+    branches:
+      - iot-dashboard
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "iot-dashboard/**"
+      - ".github/workflows/iot-dashboard-build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: iot-dashboard/package.json
+      - name: Install dashboard dependencies
+        working-directory: iot-dashboard
+        run: npm install
+      - name: Build Next.js dashboard
+        working-directory: iot-dashboard
+        run: npm run build
